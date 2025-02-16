@@ -103,16 +103,40 @@ export default function AboutMe() {
     <main className="cursor-gradient min-h-screen p-8 relative overflow-hidden animate-fadeIn bg-transparent">
       <BackgroundCircles />
       <div className="max-w-3xl mx-auto relative z-10 text-white">
-        <Link 
-          href="/" 
-          className="group inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md 
-            bg-white/5 backdrop-blur-sm hover:bg-white/10 
-            transition-all duration-300 ease-in-out
-            hover:translate-x-[-2px] text-sm animate-slideInLeft"
-        >
-          <span className="inline-block leading-none relative top-[0.5px]">←</span>
-          <span className="inline-block leading-tight">Home</span>
-        </Link>
+        <div className="flex items-center justify-between">
+          <Link 
+            href="/" 
+            className="group inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md 
+              bg-white/5 backdrop-blur-sm hover:bg-white/10 
+              transition-all duration-300 ease-in-out
+              hover:translate-x-[-2px] text-sm animate-slideInLeft"
+          >
+            <span className="inline-block leading-none relative top-[0.5px]">←</span>
+            <span className="inline-block leading-tight">Home</span>
+          </Link>
+
+          <a 
+            href="/documents/resume.pdf" 
+            download
+            className="px-4 py-1.5 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-all 
+              flex items-center gap-2 text-sm animate-slideInRight"
+          >
+            <span>Download Resume</span>
+            <svg 
+              className="w-4 h-4" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                strokeWidth={2} 
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+              />
+            </svg>
+          </a>
+        </div>
 
         <div className="space-y-8 backdrop-blur-sm bg-black/30 p-8 rounded-lg mt-8 
           animate-slideInUp hover:bg-black/40 transition-all duration-500">
