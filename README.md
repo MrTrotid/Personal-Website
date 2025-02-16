@@ -1,33 +1,37 @@
-# Baman Guragai - Personal Website
+# Personal Portfolio Website
 
-This is my personal portfolio website built using modern web technologies. The site features a dynamic cursor-tracking gradient background and showcases my educational journey and skills.
-
-## Features
-
-- Interactive gradient background that follows cursor movement
-- Animated floating circles background effect
-- Expandable education and skills sections
-- Responsive design
-- Smooth animations and transitions
+A modern, responsive portfolio website showcasing my projects and skills. Built with Next.js and TailwindCSS, featuring interactive animations and a dynamic project showcase.
 
 ## Tech Stack
 
-- Next.js 14
-- TypeScript
-- Tailwind CSS
-- React
+- **Framework**: Next.js 14
+- **Styling**: TailwindCSS
+- **Animations**: Framer Motion
+- **Language**: TypeScript
 
-## Running Locally
+## Features
 
+- Responsive design that works on all devices
+- Interactive UI elements with smooth animations
+- Dynamic project showcase with modal views
+- Image galleries for project demonstrations
+- Custom cursor effects and background animations
+
+## Getting Started
+
+1. Clone the repository:
 ```bash
-# Clone the repository
 git clone [your-repo-url]
+```
 
-# Install dependencies
-npm install
+2. Install dependencies:
+```bash
+pnpm install
+```
 
-# Run the development server
-npm run dev
+3. Run the development server:
+```bash
+pnpm run dev
 ```
 
 Visit [http://localhost:3000](http://localhost:3000) to view the website.
