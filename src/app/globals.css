@@ -1,0 +1,254 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+@keyframes blink {
+  0% { border-color: transparent }
+  50% { border-color: white }
+  100% { border-color: transparent }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from { 
+    transform: translateX(-30px); 
+    opacity: 0; 
+  }
+  to { 
+    transform: translateX(0); 
+    opacity: 1; 
+  }
+}
+
+@keyframes slideInRight {
+  from { 
+    transform: translateX(30px); 
+    opacity: 0; 
+  }
+  to { 
+    transform: translateX(0); 
+    opacity: 1; 
+  }
+}
+
+@keyframes slideInUp {
+  from { 
+    transform: translateY(30px); 
+    opacity: 0; 
+  }
+  to { 
+    transform: translateY(0); 
+    opacity: 1; 
+  }
+}
+
+@keyframes slideInDown {
+  from { 
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  to { 
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from { 
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to { 
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes floatUp {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-30px); }
+}
+
+@keyframes floatDown {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(30px); }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    height: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    height: var(--content-height);
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 1;
+    height: var(--content-height);
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    height: 0;
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes bounceDown {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(3px); }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Remove or comment out the old .hero-background styles */
+
+/* .hero-background {
+  background: radial-gradient(
+    800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(30, 27, 75, 0.8),
+    rgba(15, 23, 42, 0.95),
+    rgba(10, 10, 10, 1)
+  );
+  position: relative;
+}
+
+.hero-background::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    -45deg,
+    #1a1a1a,
+    #0f172a,
+    #1e1b4b,
+    #0c1222
+  );
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  z-index: -1;
+} */
+
+.cursor-gradient {
+  position: relative;
+  min-height: 100vh;
+  background: radial-gradient(
+    800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(30, 27, 75, 0.8),
+    rgba(15, 23, 42, 0.95),
+    rgba(10, 10, 10, 1)
+  );
+}
+
+.cursor-gradient::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(
+    -45deg,
+    #1a1a1a,
+    #0f172a,
+    #1e1b4b,
+    #0c1222
+  );
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  z-index: -1;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-slideInLeft {
+  animation: slideInLeft 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-slideInRight {
+  animation: slideInRight 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-slideInUp {
+  animation: slideInUp 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-slideInDown {
+  animation: slideInDown 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.dropdown-content {
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dropdown-content[data-state="open"] {
+  animation: slideDown 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.dropdown-content[data-state="closed"] {
+  animation: slideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.dropdown-indicator {
+  transition: transform 0.3s ease;
+}
+
+/* Apply bounce animation when hovering over the button, but only when menu is closed */
+.dropdown-trigger:not(.active):hover .dropdown-indicator {
+  animation: bounceDown 1s ease infinite;
+}
+
+/* Only apply bounce animation when menu is closed */
+.dropdown-trigger:not(.active) .dropdown-indicator:hover {
+  animation: bounceDown 1s ease infinite;
+}
+
+.delay-200 {
+  animation-delay: 200ms;
+}
+
+.delay-300 {
+  animation-delay: 300ms;
+}
