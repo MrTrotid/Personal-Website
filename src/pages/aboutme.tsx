@@ -31,7 +31,6 @@ export default function AboutMe() {
   const [isSkillsOpen, setIsSkillsOpen] = useState(true);
   const [isEducationOpen, setIsEducationOpen] = useState(true);
   const [isExperienceOpen, setIsExperienceOpen] = useState(true);
-  const [showMessage, setShowMessage] = useState(false);
   const [errorType, setErrorType] = useState<'updating' | 'error' | null>(null);
   const [expandedSchool, setExpandedSchool] = useState<SchoolKey | null>(null);
   const [expandedExperience, setExpandedExperience] = useState<ExperienceType | null>(null);

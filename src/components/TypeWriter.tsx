@@ -1,11 +1,12 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 export default function TypeWriter() {
   const [text, setText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
   const [loopNum, setLoopNum] = useState(0);
-  const words = ['Hello...', 'I am Baman'];
+  
+  const words = useMemo(() => ['Hello...', 'I am Baman'], []);
   const typingSpeed = 100;
   const pauseDuration = 1000;
 

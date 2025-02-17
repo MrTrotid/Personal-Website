@@ -1,7 +1,7 @@
 {
   "build": {
-    "command": "npm run build && npm run export",
-    "output": ".next",
+    "command": "npm run build",
+    "output": "dist",
     "baseDirectory": ".",
     "environment": {
       "NODE_VERSION": "20",
