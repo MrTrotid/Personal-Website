@@ -1,6 +1,12 @@
 import TypeWriter from '@/components/TypeWriter';
 import BackgroundCircles from '@/components/BackgroundCircles';
 import Link from 'next/link';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'MrTrotid - Portfolio',
+  description: 'Welcome to MrTrotid\'s portfolio website',
+};
 
 export default function Home() {
   return (
