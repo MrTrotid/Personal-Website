@@ -8,6 +8,7 @@ const nextConfig = {
   },
   images: {
     unoptimized: true,
+    domains: ['*'],
     loader: 'custom',
     loaderFile: './image-loader.js'
   },
