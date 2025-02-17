@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import BackgroundCircles from '@/components/BackgroundCircles';
-import Modal from '@/components/Modal';
+import NotificationModal from '@/components/NotificationModal';
 import { useState, useRef, useEffect } from 'react';
 import '../app/globals.css';
 import Image from 'next/image';
@@ -28,11 +28,13 @@ interface ExperienceData {
 }
 
 export default function AboutMe() {
-  const [selectedSchool, setSelectedSchool] = useState<SchoolKey | null>(null);
   const [isSkillsOpen, setIsSkillsOpen] = useState(true);
   const [isEducationOpen, setIsEducationOpen] = useState(true);
-  const [selectedExperience, setSelectedExperience] = useState<ExperienceType | null>(null);
   const [isExperienceOpen, setIsExperienceOpen] = useState(true);
+  const [showMessage, setShowMessage] = useState(false);
+  const [errorType, setErrorType] = useState<'updating' | 'error' | null>(null);
+  const [expandedSchool, setExpandedSchool] = useState<SchoolKey | null>(null);
+  const [expandedExperience, setExpandedExperience] = useState<ExperienceType | null>(null);
 
   const skillsRef = useRef<HTMLDivElement>(null);
   const educationRef = useRef<HTMLDivElement>(null);
@@ -62,6 +64,32 @@ export default function AboutMe() {
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
+
+  const handleResumeClick = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    
+    try {
+      const response = await fetch('/documents/resume.pdf');
+      if (response.ok) {
+        window.location.href = '/documents/resume.pdf';
+      } else {
+        setErrorType('updating');
+      }
+    } catch (error) {
+      setErrorType('error');
+    }
+  };
+
+  const getToastMessage = () => {
+    switch (errorType) {
+      case 'updating':
+        return { message: 'Resume is being updated. Check back soon!', icon: '🚀' };
+      case 'error':
+        return { message: 'Unable to download resume. Please try again later.', icon: '⚠️' };
+      default:
+        return { message: '', icon: '' };
+    }
+  };
 
   const educationData: Record<SchoolKey, SchoolData> = {
     'stxaviers': {
@@ -103,10 +131,10 @@ export default function AboutMe() {
     <main className="cursor-gradient min-h-screen p-8 relative overflow-hidden animate-fadeIn bg-transparent">
       <BackgroundCircles />
       <div className="max-w-3xl mx-auto relative z-10 text-white">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-8">
           <Link 
             href="/" 
-            className="group inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md 
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md 
               bg-white/5 backdrop-blur-sm hover:bg-white/10 
               transition-all duration-300 ease-in-out
               hover:translate-x-[-2px] text-sm animate-slideInLeft"
@@ -115,27 +143,27 @@ export default function AboutMe() {
             <span className="inline-block leading-tight">Home</span>
           </Link>
 
-          <a 
-            href="/documents/resume.pdf" 
-            download
-            className="px-4 py-1.5 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-all 
-              flex items-center gap-2 text-sm animate-slideInRight"
-          >
-            <span>Download Resume</span>
-            <svg 
-              className="w-4 h-4" 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
+          <div className="relative">
+            <a 
+              href="/documents/resume.pdf" 
+              onClick={handleResumeClick}
+              className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-500/20 
+                text-blue-200 rounded-md hover:bg-blue-500/30 
+                transition-all duration-300 text-sm animate-slideInRight"
             >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth={2} 
-                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-              />
-            </svg>
-          </a>
+              <span>Download Resume</span>
+              <svg 
+                className="w-4 h-4" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" 
+                />
+              </svg>
+            </a>
+          </div>
         </div>
 
         <div className="space-y-8 backdrop-blur-sm bg-black/30 p-8 rounded-lg mt-8 
@@ -203,34 +231,59 @@ export default function AboutMe() {
                 </button>
                 <div 
                   ref={educationRef}
-                  className="dropdown-content"
-                  data-state={isEducationOpen ? 'open' : 'closed'}
+                  className="space-y-6"
                 >
-                  <ul className="space-y-4">
-                    {Object.entries(educationData).map(([key, school]) => (
-                      <li 
-                        key={key}
-                        onClick={() => setSelectedSchool(key as SchoolKey)}
-                        className="p-3 rounded-lg bg-black/20 backdrop-blur-sm hover:bg-black/30 
-                          transition-all duration-300 cursor-pointer transform hover:scale-[1.02]"
+                  {Object.entries(educationData).map(([key, school]) => (
+                    <div 
+                      key={key}
+                      className="rounded-lg bg-black/20 backdrop-blur-sm hover:bg-black/30 
+                        transition-all duration-500"
+                    >
+                      {/* Header */}
+                      <div 
+                        onClick={() => setExpandedSchool(expandedSchool === key as SchoolKey ? null : key as SchoolKey)}
+                        className="p-4 flex items-center gap-4 cursor-pointer"
                       >
-                        <div className="flex items-center gap-3">
-                          <div className="relative w-14 h-14 flex-shrink-0 rounded-lg overflow-hidden">
-                            <Image
-                              src={school.logo}
-                              alt={`${school.name} logo`}
-                              fill
-                              className="object-contain"
-                            />
+                        <div className="relative w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden">
+                          <Image src={school.logo} alt={school.name} fill className="object-contain" />
+                        </div>
+                        <div className="flex-1">
+                          <div className="font-medium text-white hover:text-blue-200 transition-colors">
+                            {school.name}
                           </div>
-                          <div className="flex-1">
-                            <div className="font-medium text-white hover:text-blue-200 transition-colors">{school.name}</div>
-                            <div className="text-sm text-gray-300">{school.period}</div>
+                          <div className="text-sm text-gray-300">{school.period}</div>
+                        </div>
+                      </div>
+
+                      {/* Expandable Content */}
+                      <div 
+                        className={`overflow-hidden transition-all duration-500 ease-in-out
+                          ${expandedSchool === key ? 'expand-animation' : 'collapse-animation'}`}
+                        style={{ transformOrigin: 'top' }}
+                      >
+                        <div className="px-4 py-4 border-t border-white/10">
+                          <div className="space-y-3">
+                            <p className="text-lg text-blue-200">{school.degree}</p>
+                            {school.grade && (
+                              <p className="text-gray-300 mt-2">
+                                <span className="text-blue-300">Grade:</span> {school.grade}
+                              </p>
+                            )}
+                            {school.activities && (
+                              <div className="mt-2">
+                                <span className="text-blue-300">Activities:</span>
+                                <ul className="list-disc list-inside mt-1 text-gray-300">
+                                  {school.activities.map((activity, i) => (
+                                    <li key={i}>{activity}</li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
                           </div>
                         </div>
-                      </li>
-                    ))}
-                  </ul>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
 
@@ -252,121 +305,57 @@ export default function AboutMe() {
                 </button>
                 <div 
                   ref={experienceRef}
-                  className="dropdown-content"
-                  data-state={isExperienceOpen ? 'open' : 'closed'}
+                  className="space-y-6"
                 >
-                  <ul className="space-y-4">
-                    {Object.entries(experienceData).map(([key, exp]) => (
-                      <li 
-                        key={key}
-                        onClick={() => setSelectedExperience(key as ExperienceType)}
-                        className="p-3 rounded-lg bg-black/20 backdrop-blur-sm hover:bg-black/30 
-                          transition-all duration-300 cursor-pointer transform hover:scale-[1.02]"
+                  {Object.entries(experienceData).map(([key, exp]) => (
+                    <div 
+                      key={key}
+                      className="rounded-lg bg-black/20 backdrop-blur-sm hover:bg-black/30 
+                        transition-all duration-500"
+                    >
+                      {/* Header */}
+                      <div 
+                        onClick={() => setExpandedExperience(expandedExperience === key as ExperienceType ? null : key as ExperienceType)}
+                        className="p-4 flex items-center gap-4 cursor-pointer"
                       >
-                        <div className="flex items-center gap-3">
-                          <div className="relative w-14 h-14 flex-shrink-0 rounded-lg overflow-hidden">
-                            <Image
-                              src={exp.logo}
-                              alt={`${exp.organization} logo`}
-                              fill
-                              className="object-contain"
-                            />
+                        <div className="relative w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden">
+                          <Image src={exp.logo} alt={exp.organization} fill className="object-contain" />
+                        </div>
+                        <div className="flex-1">
+                          <div className="font-medium text-white hover:text-blue-200 transition-colors">
+                            {exp.title}
                           </div>
-                          <div className="flex-1">
-                            <div className="font-medium text-white hover:text-blue-200 transition-colors">{exp.title}</div>
-                            <div className="text-sm text-gray-300">{exp.organization} · {exp.type}</div>
-                            <div className="text-sm text-gray-400">{exp.period}</div>
+                          <div className="text-sm text-gray-300">{exp.organization} · {exp.type}</div>
+                          <div className="text-sm text-gray-400">{exp.period}</div>
+                        </div>
+                      </div>
+
+                      {/* Expandable Content */}
+                      <div 
+                        className={`overflow-hidden transition-all duration-500 ease-in-out
+                          ${expandedExperience === key ? 'expand-animation' : 'collapse-animation'}`}
+                        style={{ transformOrigin: 'top' }}
+                      >
+                        <div className="px-4 py-4 border-t border-white/10">
+                          <div className="space-y-3">
+                            <p className="text-gray-300">{exp.location}</p>
+                            <p className="text-blue-300">{exp.type}</p>
                           </div>
                         </div>
-                      </li>
-                    ))}
-                  </ul>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
-
-              <Modal 
-                isOpen={!!selectedSchool} 
-                onClose={() => setSelectedSchool(null)}
-              >
-                {selectedSchool && (
-                  <div className="text-white">
-                    <div className="flex items-start gap-6 mb-6">
-                      <div className="relative w-28 h-28 flex-shrink-0 rounded-lg overflow-hidden">
-                        <Image
-                          src={educationData[selectedSchool].logo}
-                          alt={`${educationData[selectedSchool].name} logo`}
-                          fill
-                          className="object-contain"
-                        />
-                      </div>
-                      <div>
-                        <h3 className="text-2xl font-bold text-blue-200">
-                          {educationData[selectedSchool].name}
-                        </h3>
-                        <p className="text-lg text-gray-300 mt-2">
-                          {educationData[selectedSchool].degree}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="space-y-3">
-                      <p className="text-lg">{educationData[selectedSchool].degree}</p>
-                      <p className="text-gray-300">{educationData[selectedSchool].period}</p>
-                      {educationData[selectedSchool].grade && (
-                        <p className="text-gray-300">
-                          <span className="text-blue-300">Grade:</span> {educationData[selectedSchool].grade}
-                        </p>
-                      )}
-                      {educationData[selectedSchool].activities && (
-                        <div>
-                          <span className="text-blue-300">Activities:</span>
-                          <ul className="list-disc list-inside mt-2 text-gray-300">
-                            {educationData[selectedSchool].activities.map((activity, i) => (
-                              <li key={i}>{activity}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-              </Modal>
-
-              <Modal 
-                isOpen={!!selectedExperience} 
-                onClose={() => setSelectedExperience(null)}
-              >
-                {selectedExperience && (
-                  <div className="text-white">
-                    <div className="flex items-start gap-6 mb-6">
-                      <div className="relative w-28 h-28 flex-shrink-0 rounded-lg overflow-hidden">
-                        <Image
-                          src={experienceData[selectedExperience].logo}
-                          alt={`${experienceData[selectedExperience].organization} logo`}
-                          fill
-                          className="object-contain"
-                        />
-                      </div>
-                      <div>
-                        <h3 className="text-2xl font-bold text-blue-200">
-                          {experienceData[selectedExperience].title}
-                        </h3>
-                        <p className="text-lg text-gray-300 mt-2">
-                          {experienceData[selectedExperience].organization}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="space-y-3">
-                      <p className="text-gray-300">{experienceData[selectedExperience].period}</p>
-                      <p className="text-gray-300">{experienceData[selectedExperience].location}</p>
-                      <p className="text-blue-300">{experienceData[selectedExperience].type}</p>
-                    </div>
-                  </div>
-                )}
-              </Modal>
             </div>
           </section>
         </div>
       </div>
+      <NotificationModal 
+        {...getToastMessage()}
+        isVisible={!!errorType}
+        onClose={() => setErrorType(null)}
+      />
     </main>
   );
 }

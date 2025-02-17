@@ -133,6 +133,54 @@
   50% { transform: translateY(3px); }
 }
 
+@keyframes expandSection {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: 200px;
+    opacity: 1;
+  }
+}
+
+@keyframes collapseSection {
+  from {
+    height: 200px;
+    opacity: 1;
+  }
+  to {
+    height: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes expandContent {
+  from {
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    max-height: 1000px;
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes collapseContent {
+  from {
+    max-height: 1000px;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
@@ -195,7 +243,7 @@ body {
 }
 
 .animate-fadeIn {
-  animation: fadeIn 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
 .animate-slideInLeft {
@@ -245,10 +293,36 @@ body {
   animation: bounceDown 1s ease infinite;
 }
 
+.h-0 {
+  height: 0;
+  opacity: 0;
+}
+
+.h-\[200px\] {
+  height: 200px;
+  opacity: 1;
+}
+
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 800ms;
+}
+
 .delay-200 {
   animation-delay: 200ms;
 }
 
 .delay-300 {
   animation-delay: 300ms;
+}
+
+.expand-animation {
+  animation: expandContent 800ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  transition: all 800ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.collapse-animation {
+  animation: collapseContent 700ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  transition: all 700ms cubic-bezier(0.4, 0, 0.2, 1);
 }

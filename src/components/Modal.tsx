@@ -1,4 +1,5 @@
 'use client';
+import { useEffect } from 'react';
 
 interface ModalProps {
   isOpen: boolean;
@@ -7,19 +8,39 @@ interface ModalProps {
 }
 
 export default function Modal({ isOpen, onClose, children }: ModalProps) {
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 flex items-center justify-center animate-fadeIn overflow-y-auto p-4">
-      <div className="bg-zinc-900/95 p-8 rounded-lg max-w-2xl w-full my-8 mx-auto max-h-[90vh] overflow-y-auto animate-slideInUp">
-        <button 
-          onClick={onClose}
-          className="float-right text-gray-400 hover:text-white transition-colors"
-        >
-          ✕
-        </button>
-        <div className="overflow-y-auto">
-          {children}
+    <div 
+      className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] 
+        flex items-center justify-center p-4"
+      onClick={(e) => e.target === e.currentTarget && onClose()}
+    >
+      <div 
+        className="relative bg-zinc-900/95 rounded-lg w-full max-w-2xl
+          animate-slideInUp border border-white/10 shadow-xl"
+      >
+        <div className="p-8">
+          <button 
+            onClick={onClose}
+            className="absolute top-4 right-4 text-gray-400 hover:text-white 
+              transition-colors text-sm bg-black/20 rounded-full w-6 h-6 
+              flex items-center justify-center"
+          >
+            ✕
+          </button>
+          <div className="overflow-y-auto pr-2" style={{ maxHeight: 'calc(85vh - 6rem)' }}>
+            {children}
+          </div>
         </div>
       </div>
     </div>
