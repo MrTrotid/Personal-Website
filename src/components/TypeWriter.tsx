@@ -33,7 +33,7 @@ export default function TypeWriter() {
     }, typingSpeed);
 
     return () => clearTimeout(timer);
-  }, [text, isDeleting, loopNum]);
+  }, [text, isDeleting, loopNum, words]);
 
   return (
     <span className="border-r-2 border-white pr-1 animate-[blink_1s_infinite]">

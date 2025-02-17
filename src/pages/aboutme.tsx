@@ -75,7 +75,7 @@ export default function AboutMe() {
       } else {
         setErrorType('updating');
       }
-    } catch (error) {
+    } catch {
       setErrorType('error');
     }
   };
