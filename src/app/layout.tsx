@@ -8,8 +8,16 @@ const geist = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "Baman Guragai",
+  title: {
+    template: '%s | MrTrotid',
+    default: 'MrTrotid - Portfolio',
+  },
   description: "Personal Website",
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({
