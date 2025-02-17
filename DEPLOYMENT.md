@@ -6,10 +6,10 @@
 2. Go to Pages > Create a project
 3. Connect your GitHub repository
 4. Configure the build settings:
-   - Framework preset: None
+   - Framework preset: Next.js
    - Build command: `npm run build`
    - Build output directory: `dist`
-   - Node.js version: 18
+   - Node.js version: 20
 
 ## DNS Configuration
 
