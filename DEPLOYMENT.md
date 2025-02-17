@@ -7,8 +7,8 @@
 3. Connect your GitHub repository
 4. Configure the build settings:
    - Framework preset: Next.js
-   - Build command: `npm run build`
-   - Build output directory: `dist`
+   - Build command: `npm run build && npm run export`
+   - Build output directory: `.next`
    - Node.js version: 20
 
 ## DNS Configuration

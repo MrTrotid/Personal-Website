@@ -1,10 +1,11 @@
 {
   "build": {
-    "command": "npm run build",
-    "output": "dist",
+    "command": "npm run build && npm run export",
+    "output": ".next",
     "baseDirectory": ".",
     "environment": {
-      "NODE_VERSION": "20"
+      "NODE_VERSION": "20",
+      "NEXT_TELEMETRY_DISABLED": "1"
     }
   }
 }
