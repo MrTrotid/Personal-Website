@@ -5,7 +5,7 @@ import Modal from '@/components/Modal';
 import { useState } from 'react';
 import '../app/globals.css';
 import Image from 'next/image';
-import Head from 'next/head';
+import type { Metadata } from 'next';
 
 interface Project {
   title: string;
@@ -16,7 +16,13 @@ interface Project {
   githubUrl?: string;
   image: string;
   additionalImages: string[]; // Add this new property
+  category: 'personal' | 'group';
 }
+
+export const metadata: Metadata = {
+  title: 'My Work',
+  description: 'Explore MrTrotid\'s projects and work',
+};
 
 export default function MyWork() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -33,7 +39,8 @@ export default function MyWork() {
       additionalImages: [
         "/projects/sherlock1.png",
         "/projects/sherlock2.png"
-      ]
+      ],
+      category: 'personal',
     },
     {
       title: "AQ Sentinel",
@@ -46,7 +53,8 @@ export default function MyWork() {
         "/projects/aqsentinel1.png",
         "/projects/aqsentinel2.png",
         "/projects/aqsentinel3.png"
-      ]
+      ],
+      category: 'group',
     },
     {
       title: "Personal Portfolio",
@@ -59,17 +67,17 @@ export default function MyWork() {
         "/projects/portfolio1.png",
         "/projects/portfolio2.png",
         "/projects/portfolio3.png"
-      ]
+      ],
+      category: 'personal',
     },
     // Add more projects here
   ];
 
+  const personalProjects = projects.filter(p => p.category === 'personal');
+  const groupProjects = projects.filter(p => p.category === 'group');
+
   return (
     <>
-      <Head>
-        <title>MrTrotid Works</title>
-        <meta name="description" content="Explore MrTrotid's projects and work" />
-      </Head>
       <main className="cursor-gradient min-h-screen p-8 relative overflow-hidden animate-fadeIn bg-transparent">
         <BackgroundCircles />
         <div className="max-w-6xl mx-auto relative z-10 text-white">
@@ -84,49 +92,102 @@ export default function MyWork() {
             <span className="inline-block leading-tight">Home</span>
           </Link>
 
-          <div className="space-y-8 backdrop-blur-sm bg-black/30 p-8 rounded-lg mt-8 
+          <div className="space-y-12 backdrop-blur-sm bg-black/30 p-8 rounded-lg mt-8 
             animate-slideInUp hover:bg-black/40 transition-all duration-500">
             <h1 className="text-4xl font-bold animate-slideInRight hover:scale-[1.02] transition-all duration-500">
               My Work
             </h1>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {projects.map((project, index) => (
-                <div
-                  key={index}
-                  onClick={() => setSelectedProject(project)}
-                  className="p-6 rounded-lg bg-black/20 backdrop-blur-sm 
-                    hover:bg-black/30 transition-all duration-300 cursor-pointer
-                    transform hover:scale-105 hover:shadow-xl
-                    ease-out origin-center animate-slideInUp"
-                  style={{ 
-                    animationDelay: `${index * 100}ms`,
-                    transitionProperty: 'all',
-                    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
-                  }}
-                >
-                  <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden">
-                    <Image
-                      src={project.image}
-                      alt={project.title}
-                      fill
-                      className="object-cover"
-                    />
+            {/* Personal Projects Section */}
+            <div className="space-y-6">
+              <h2 className="text-2xl font-semibold text-blue-200">Personal Projects</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {personalProjects.map((project, index) => (
+                  <div
+                    key={index}
+                    onClick={() => setSelectedProject(project)}
+                    className="p-6 rounded-lg bg-black/20 backdrop-blur-sm 
+                      hover:bg-black/30 cursor-pointer
+                      transform-gpu hover:scale-[1.05]
+                      transition-transform duration-300 ease-out
+                      hover:shadow-lg hover:z-50
+                      relative"
+                    style={{ 
+                      animationDelay: `${index * 100}ms`,
+                    }}
+                  >
+                    <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden">
+                      <Image
+                        src={project.image}
+                        alt={project.title}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    <h3 className="text-xl font-bold mb-3 text-blue-200 
+                      transition-colors duration-300 group-hover:text-blue-100">
+                      {project.title}
+                    </h3>
+                    <p className="text-gray-300 mb-4">{project.description}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {project.techStack.map((tech, i) => (
+                        <span 
+                          key={i}
+                          className="px-3 py-1 text-sm bg-blue-500/10 rounded-full text-blue-200"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                  <h3 className="text-xl font-bold mb-3 text-blue-200">{project.title}</h3>
-                  <p className="text-gray-300 mb-4">{project.description}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {project.techStack.map((tech, i) => (
-                      <span 
-                        key={i}
-                        className="px-3 py-1 text-sm bg-blue-500/10 rounded-full text-blue-200"
-                      >
-                        {tech}
-                      </span>
-                    ))}
+                ))}
+              </div>
+            </div>
+
+            {/* Group Projects Section */}
+            <div className="space-y-6">
+              <h2 className="text-2xl font-semibold text-blue-200">Group Projects</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {groupProjects.map((project, index) => (
+                  <div
+                    key={index}
+                    onClick={() => setSelectedProject(project)}
+                    className="p-6 rounded-lg bg-black/20 backdrop-blur-sm 
+                      hover:bg-black/30 cursor-pointer
+                      transform-gpu hover:scale-[1.05]
+                      transition-transform duration-300 ease-out
+                      hover:shadow-lg hover:z-50
+                      relative"
+                    style={{ 
+                      animationDelay: `${index * 100}ms`,
+                    }}
+                  >
+                    <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden">
+                      <Image
+                        src={project.image}
+                        alt={project.title}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    <h3 className="text-xl font-bold mb-3 text-blue-200 
+                      transition-colors duration-300 group-hover:text-blue-100">
+                      {project.title}
+                    </h3>
+                    <p className="text-gray-300 mb-4">{project.description}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {project.techStack.map((tech, i) => (
+                        <span 
+                          key={i}
+                          className="px-3 py-1 text-sm bg-blue-500/10 rounded-full text-blue-200"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </div>
