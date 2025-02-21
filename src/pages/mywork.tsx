@@ -97,8 +97,13 @@ export default function MyWork() {
                   onClick={() => setSelectedProject(project)}
                   className="p-6 rounded-lg bg-black/20 backdrop-blur-sm 
                     hover:bg-black/30 transition-all duration-300 cursor-pointer
-                    transform hover:scale-[1.02] animate-slideInUp"
-                  style={{ animationDelay: `${index * 100}ms` }}
+                    transform hover:scale-105 hover:shadow-xl
+                    ease-out origin-center animate-slideInUp"
+                  style={{ 
+                    animationDelay: `${index * 100}ms`,
+                    transitionProperty: 'all',
+                    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+                  }}
                 >
                   <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden">
                     <Image
