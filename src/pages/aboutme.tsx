@@ -8,7 +8,7 @@ import Image from 'next/image';
 import Head from 'next/head';
 
 type SchoolKey = 'stxaviers' | 'sos';
-type ExperienceType = 'jjb' | 'scouts';
+type ExperienceType = 'jjb' | 'scouts' | 'alumni';
 
 interface SchoolData {
   name: string;
@@ -112,7 +112,7 @@ export default function AboutMe() {
     'jjb': {
       title: "Event Manager and Deputy Manager of Information Technology",
       organization: "Junior Jaycees Budhanilkantha",
-      logo: "/logos/jjb.png",
+      logo: "/logos/JCI_logo.jpeg",
       period: "Feb 2024 - Jan 2025",
       location: "Kathmandu, Bāgmatī, Nepal",
       type: "Seasonal"
@@ -120,10 +120,18 @@ export default function AboutMe() {
     'scouts': {
       title: "Patrol Leader",
       organization: "Nepal Scouts",
-      logo: "/logos/scouts.png",
+      logo: "/logos/Nepal_scout.png",
       period: "Apr 2019 - Apr 2021",
       location: "Bhaktapur, Bāgmatī, Nepal",
       type: "Apprenticeship"
+    },
+    'alumni': {
+      title: "Executive",
+      organization: "Alumni Club",
+      logo: "/logos/alumni_club.png",
+      period: "Jan 2023 - Present",
+      location: "Kathmandu, Bāgmatī, Nepal",
+      type: "Leadership"
     }
   };
 
